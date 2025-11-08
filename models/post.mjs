@@ -3,17 +3,16 @@ import mongoose from "mongoose";
 const commentSchema = new mongoose.Schema({
   user: { type: String, required: true },
   comment: { type: String, required: true },
-  email: { type: String },   // optional
-  phone: { type: String }    // optional
-}, { timestamps: true });
+  createdAt: { type: Date, default: Date.now }
+});
 
 const postSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  author: { type: String },
-  excerpt: { type: String },
-  coverImage: { type: String },
-  comments: [commentSchema]
+  title: String,
+  author: String,
+  excerpt: String,
+  coverImage: String,
+  comments: [commentSchema],
 }, { timestamps: true });
 
-const Post = mongoose.model("Post", postSchema);
-export default Post;
+export default mongoose.model("Post", postSchema);
+

@@ -5,35 +5,30 @@ import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url";
 import postsRoutes from "./routes/posts.mjs";
+import subscribersRoutes from "./routes/subscribers.mjs";
 
 dotenv.config();
 
 const app = express();
 
-// Fayl yo‘lini olish (ESM uchun)
+// __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "../public"))); // frontend
 
-// Static fayllar (frontend)
-app.use(express.static(path.join(__dirname, "public")));
-
-// API routelar
+// Routes
 app.use("/api/posts", postsRoutes);
+app.use("/api/subscribers", subscribersRoutes);
 
-// 🔹 Brauzerda '/' ochilganda index.html ni yuborish
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-
-// MongoDB ulanish
+// MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB ulanishi muvaffaqiyatli"))
   .catch(err => console.log("MongoDB xato:", err));
 
-// Serverni ishga tushurish
+// Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`✅ Server ${PORT}-portda ishlamoqda`));
+app.listen(PORT, () => console.log(`Server ${PORT}-portda ishlamoqda`));

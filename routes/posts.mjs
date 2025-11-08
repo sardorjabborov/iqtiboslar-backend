@@ -1,4 +1,3 @@
-routes/posts.mjs
 import express from "express";
 import Post from "../models/post.mjs";
 
