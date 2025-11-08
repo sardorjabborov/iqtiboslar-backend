@@ -14,16 +14,16 @@ router.get("/", async (req, res) => {
   }
 });
 
-// POST new comment
+// POST new comment (email va telefon bilan)
 router.post("/:id/comments", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (!post) return res.status(404).json({ success: false });
 
-    const { user, comment } = req.body;
+    const { user, comment, email, phone } = req.body;
     if (!user || !comment) return res.status(400).json({ success: false });
 
-    post.comments.push({ user, comment });
+    post.comments.push({ user, comment, email, phone });
     await post.save();
 
     res.json({ success: true });
